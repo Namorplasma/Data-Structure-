@@ -1,0 +1,161 @@
+Problem Statement:  1) Write a program to read an integer 1D array containing 8 bits (0s, 1s) of an unsigned binary integer. The program should print the decimal value for the integer
+Algorithm: 
+1.	Start
+2.	Take user input for an 8-bit binary number.
+3.	Create an array to store binary digits.
+4.	Take user input for the bit value and store it in the array.
+5.	Initialize a variable for decimal value to 0.
+6.	Multiply the bit value at the current position by 2^(8 - current position).
+7.	 Add the result to the decimal value.
+8.	 Display the value.
+9.	 End.
+Source Code:  
+import java.util.Scanner;
+public class Question1 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] Array = new int[8];
+        System.out.println("Write the binary number:");
+        for (int i = 0; i < 8; i++) {
+            System.out.print("Binary Number" + (i + 1) + ": ");
+            Array[i] = scanner.nextInt();}
+        int decimalValue = 0;
+        for (int i = 0; i < 8; i++) {
+            decimalValue += Array[i] * Math.pow(2, 7 - i);}
+        System.out.println("Decimal value: " + decimalValue);
+}} 
+
+Problem Statement:  2)   Currency notes are available in the following seven denominations: Rs. 1, Rs. 2, Rs. 5, Rs. 10, Rs. 20, Rs.50, and Rs. 100.
+You will first read an integer array (named purse [7]) of seven elements, where the array elements represent the number of notes of each denomination (in increasing order of denomination) available with you. You are also given an amount of money to be paid using these notes. The amount will be less than Rs. 1000. You have to pay the amount using minimum number of notes. Print the number of notes of each denomination which you will use to pay the amount. If the amount cannot be paid using the available notes, print “Failed to Pay”.
+Algorithm: 
+1.	Start
+2.	Initialize arrays 'wallet’ and 'denominations'.
+3.	Take user’s input for each denominations in wallet.
+4.	Input amount to be paid (>1000) and store it in 'amount'.
+5.	Call MinimumNotes(wallet, amount, denominations).
+6.	Function MinimumNotes(wallet, amount, denominations):
+7.	Initialize array 'notesUsed'.
+8.	Iterate in reverse through 'denominations'.
+9.	Calculate notes to use (minimum of amount/denomination and quantity in 'wallet').
+10.	Update 'amount' and 'wallet’ based on notes used.
+11.	Store notes used in 'notesUsed'.
+12.	Check if amount is zero.
+13.	If yes, print "Smallest amount of notes taken:".
+14.	Iterate through 'notesUsed' and print denomination and notes used.
+15.	If no, print "Failed to Pay".
+
+
+Source Code:  
+import java.util.Scanner;
+public class Question2 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] wallet = new int[7];
+        String[] denominations = {"1", "2", "5", "10", "20", "50", "100"};
+        for (int i = 0; i < 7; i++) {
+            System.out.print("Enter the required amount " + denominations[i] + " RS note: ");
+            wallet[i] = scanner.nextInt();
+        }
+
+        System.out.print("Enter amount to pay>1000: ");
+        int amount = scanner.nextInt();
+        MinimumNotes(wallet, amount, denominations); }
+    private static void MinimumNotes(int[] wallet, int amount, String[] denominations) {
+        int[] notesUsed = new int[7];
+
+        for (int i = 6; i >= 0 && amount > 0; i--) {
+            int denomination = Integer.parseInt(denominations[i]);
+            int notesToUse = Math.min(amount / denomination, wallet[i]);
+            amount -= notesToUse * denomination;
+            wallet[i] -= notesToUse;
+            notesUsed[i] = notesToUse; }
+
+        if (amount == 0) {
+            System.out.println("Smallest amount of notes taken:");
+            for (int i = 0; i < 7; i++) {
+                if (notesUsed[i] > 0) {
+                    System.out.println("Rs. " + denominations[i] + ": " + notesUsed[i] + " notes"); } }} else { System.out.println("Failed to Pay");  } }
+}
+
+Problem Statement: 3) Write functions to perform the following operations with two-dimensional arrays.
+i) Reading any two-dimensional array elements.
+ii) Finding maximum and standard deviation of array elements.
+iii) Printing the transpose of a matrix
+Algorithm: For combined:
+1. Start
+2. Input dimensions for the 2D array (rows, columns).
+3. Create and populate the array using the Read Array Function.
+4. Print the original array with the Print Array Function.
+5. Calculate and print the max value and standard deviation using the Find Max and Std Function.
+6. Transpose and print the array using the Transpose Matrix and Print Array Functions.
+7.End
+Algorithm for ii) Finding maximum and standard deviation of array elements.
+1.	Start
+2.	Receive a 2D array.
+3.	Find the maximum value by iterating through the array.
+4.	Compute the mean by summing all values and dividing by the total elements.
+5.	Determine variance by summing squares of differences from the mean.
+6.	Calculate standard deviation by taking the square root of the variance.
+7.	Return a tuple or array with the max value and standard deviation.
+8.	End
+Algorithm for iii) Printing the transpose of a matrix
+1.	Start
+2.	Receive a 2D array as a parameter.
+3.	Create a new 2D array with the transposed dimensions.
+4.	For each element in the original array, place it in the corresponding position in the transposed array.
+5.	Return the transposed 2D array.
+6.	End
+
+Source Code:  
+import java.util.Scanner;
+public class Question3i {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Put Rows and Columns: ");
+        int rows = scanner.nextInt(), columns = scanner.nextInt();
+        int[][] array = readArray(rows, columns);
+        System.out.println("Array is:");
+        printArray(array);
+        double[] result = MaxStd(array);
+        System.out.println("Maximum value: " + result[0]);
+        System.out.println("Standard Deviation: " + result[1]);
+        printArray(transposeMatrix(array));
+    }
+    public static int[][] readArray(int rows, int columns) {
+        Scanner scanner = new Scanner(System.in);
+        int[][] array = new int[rows][columns];
+        System.out.println("Enter the values:");
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                array[i][j] = scanner.nextInt();
+        return array;
+    }
+    public static double[] MaxStd(int[][] array) {
+        int rows = array.length, cols = array[0].length;
+        int max = Integer.MIN_VALUE;
+        double sum = 0, sumSquares = 0;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++) {
+                int element = array[i][j];
+                max = Math.max(max, element);
+                sum += element;
+                sumSquares += element * element;
+            }
+        double mean = sum / (rows * cols);
+        double variance = (sumSquares / (rows * cols)) - (mean * mean);
+        double stdDeviation = Math.sqrt(variance);
+        return new double[]{max, stdDeviation};
+    }
+    public static int[][] transposeMatrix(int[][] matrix) {
+        int rows = matrix.length, cols = matrix[0].length;
+        int[][] transpose = new int[cols][rows];
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                transpose[j][i] = matrix[i][j];
+        return transpose;
+    }
+    public static void printArray(int[][] array) {
+        for (int[] row : array)
+            System.out.println(java.util.Arrays.toString(row));}
+} 
+ 
